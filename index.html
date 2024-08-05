@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企業情報検索システム</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 300px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    td:nth-child(3), td:nth-child(4) {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>企業情報検索システム</h1>
+  <input type="text" id="searchInput" placeholder="企業名、業種、本社を検索...">
+  <table id="companyTable">
+    <thead>
+      <tr>
+        <th>企業名</th>
+        <th>業種</th>
+        <th>従業員数</th>
+        <th>設立日</th>
+        <th>本社</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- JSONデータはJavaScriptで追加する -->
+    </tbody>
+  </table>
+
+  <script>
+    // サンプルのJSONデータ
+    const companies = [
+  {
+    "companyName": "株式会社サンプル企業",
+    "industry": "IT",
+    "employees": 100,
+    "established": "2000-01-01",
+    "headquarters": "東京都千代田区"
+  },
+  {
+    "companyName": "有限会社アリス",
+    "industry": "小売",
+    "employees": 30,
+    "established": "2015-04-15",
+    "headquarters": "大阪府大阪市"
+  },
+  {
+    "companyName": "株式会社デジタルイノベーション",
+    "industry": "IT",
+    "employees": 150,
+    "established": "2010-07-20",
+    "headquarters": "東京都新宿区"
+  },
+  {
+    "companyName": "有限会社グリーンフィールド",
+    "industry": "農業",
+    "employees": 25,
+    "established": "2005-09-10",
+    "headquarters": "北海道札幌市"
+  },
+  {
+    "companyName": "株式会社クリエイティブデザイン",
+    "industry": "デザイン",
+    "employees": 40,
+    "established": "2012-11-05",
+    "headquarters": "神奈川県横浜市"
+  },
+  {
+    "companyName": "有限会社ビジネスソリューション",
+    "industry": "コンサルティング",
+    "employees": 60,
+    "established": "1998-03-18",
+    "headquarters": "大阪府大阪市"
+  },
+  {
+    "companyName": "株式会社エコプロジェクト",
+    "industry": "環境",
+    "employees": 80,
+    "established": "2001-05-25",
+    "headquarters": "愛知県名古屋市"
+  },
+  {
+    "companyName": "有限会社フードマスター",
+    "industry": "飲食",
+    "employees": 50,
+    "established": "2013-08-30",
+    "headquarters": "福岡県福岡市"
+  },
+  {
+    "companyName": "株式会社ヘルステック",
+    "industry": "医療",
+    "employees": 120,
+    "established": "2008-02-14",
+    "headquarters": "東京都渋谷区"
+  },
+  {
+    "companyName": "有限会社トラベルジャパン",
+    "industry": "旅行",
+    "employees": 70,
+    "established": "2016-12-01",
+    "headquarters": "京都府京都市"
+  },
+  {
+    "companyName": "株式会社ファイナンスプラン",
+    "industry": "金融",
+    "employees": 90,
+    "established": "1995-10-20",
+    "headquarters": "東京都港区"
+  },
+  {
+    "companyName": "有限会社エンターテインメント",
+    "industry": "エンターテインメント",
+    "employees": 45,
+    "established": "2003-06-10",
+    "headquarters": "兵庫県神戸市"
+  },
+  {
+    "companyName": "株式会社テクノロジー",
+    "industry": "IT",
+    "employees": 200,
+    "established": "1999-04-25",
+    "headquarters": "東京都中央区"
+  },
+  {
+    "companyName": "有限会社エデュケーション",
+    "industry": "教育",
+    "employees": 35,
+    "established": "2011-03-01",
+    "headquarters": "埼玉県さいたま市"
+  },
+  {
+    "companyName": "株式会社ライフサポート",
+    "industry": "福祉",
+    "employees": 85,
+    "established": "2006-09-15",
+    "headquarters": "神奈川県川崎市"
+  },
+  {
+    "companyName": "有限会社ホスピタリティ",
+    "industry": "ホテル",
+    "employees": 60,
+    "established": "2017-07-25",
+    "headquarters": "沖縄県那覇市"
+  },
+  {
+    "companyName": "株式会社バイオテック",
+    "industry": "バイオ",
+    "employees": 110,
+    "established": "2009-01-30",
+    "headquarters": "広島県広島市"
+  },
+  {
+    "companyName": "有限会社ロジスティクス",
+    "industry": "物流",
+    "employees": 95,
+    "established": "1996-11-20",
+    "headquarters": "千葉県千葉市"
+  },
+  {
+    "companyName": "株式会社オートメーション",
+    "industry": "製造",
+    "employees": 130,
+    "established": "2002-05-14",
+    "headquarters": "静岡県静岡市"
+  },
+  {
+    "companyName": "有限会社メディア",
+    "industry": "広告",
+    "employees": 55,
+    "established": "2010-09-30",
+    "headquarters": "北海道札幌市"
+  },
+  {
+    "companyName": "株式会社エネルギー",
+    "industry": "エネルギー",
+    "employees": 180,
+    "established": "2004-02-10",
+    "headquarters": "東京都品川区"
+  },
+  {
+    "companyName": "有限会社コスメティック",
+    "industry": "化粧品",
+    "employees": 70,
+    "established": "2014-06-05",
+    "headquarters": "大阪府大阪市"
+  },
+  {
+    "companyName": "株式会社アートギャラリー",
+    "industry": "アート",
+    "employees": 25,
+    "established": "2012-10-12",
+    "headquarters": "愛知県名古屋市"
+  },
+  {
+    "companyName": "有限会社ペットケア",
+    "industry": "ペット",
+    "employees": 40,
+    "established": "2007-04-01",
+    "headquarters": "福岡県北九州市"
+  },
+  {
+    "companyName": "株式会社ファッション",
+    "industry": "ファッション",
+    "employees": 150,
+    "established": "1998-08-20",
+    "headquarters": "東京都渋谷区"
+  },
+  {
+    "companyName": "有限会社スポーツ",
+    "industry": "スポーツ",
+    "employees": 50,
+    "established": "2015-01-10",
+    "headquarters": "神奈川県横浜市"
+  },
+  {
+    "companyName": "株式会社エンタープライズ",
+    "industry": "IT",
+    "employees": 170,
+    "established": "2000-12-25",
+    "headquarters": "東京都新宿区"
+  },
+  {
+    "companyName": "有限会社ライティング",
+    "industry": "照明",
+    "employees": 35,
+    "established": "2016-03-15",
+    "headquarters": "兵庫県神戸市"
+  },
+  {
+    "companyName": "株式会社フィットネス",
+    "industry": "フィットネス",
+    "employees": 90,
+    "established": "2001-11-10",
+    "headquarters": "京都府京都市"
+  },
+  {
+    "companyName": "有限会社クラウドサービス",
+    "industry": "IT",
+    "employees": 140,
+    "established": "2009-07-25",
+    "headquarters": "東京都中央区"
+  }
+];
+
+
+    // HTMLのテーブルにJSONデータを表示する関数
+    function displayCompanies(companies) {
+      const tableBody = document.querySelector("#companyTable tbody");
+      tableBody.innerHTML = ''; // テーブルの内容をクリア
+
+      companies.forEach(company => {
+        const row = `
+          <tr>
+            <td>${company.companyName}</td>
+            <td>${company.industry}</td>
+            <td>${company.employees}</td>
+            <td>${company.established}</td>
+            <td>${company.headquarters}</td>
+          </tr>
+        `;
+        tableBody.innerHTML += row;
+      });
+    }
+
+    // 検索関数の定義
+    function searchCompanies(keyword) {
+      keyword = keyword.toLowerCase(); // 検索キーワードを小文字に変換する
+      const results = companies.filter(company =>
+        company.companyName.toLowerCase().includes(keyword) ||
+        company.industry.toLowerCase().includes(keyword) ||
+        company.headquarters.toLowerCase().includes(keyword)
+      );
+      return results;
+    }
+
+    // 検索入力のイベントリスナーを設定
+    const searchInput = document.querySelector("#searchInput");
+    searchInput.addEventListener("input", () => {
+      const searchValue = searchInput.value.trim();
+      const searchResults = searchCompanies(searchValue);
+      displayCompanies(searchResults);
+    });
+
+    // 初期表示
+    displayCompanies(companies);
+  </script>
+</body>
+</html>
